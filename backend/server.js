@@ -12,12 +12,23 @@ const sequelize = require("./src/config/database");
 require("./src/models");
 
 const authRoutes = require("./src/routes/authRoutes");
+const testRoutes = require("./src/routes/testRoutes");
+const adminRoutes = require("./src/routes/adminRoutes");
+const storeRoutes = require("./src/routes/storeRoutes");
+const userRoutes = require("./src/routes/userRoutes");
+const ownerRoutes = require("./src/routes/ownerRoutes");
+
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth", authRoutes);
+app.use("/api/test", testRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin/stores", storeRoutes);
+app.use("/api", userRoutes);
+app.use("/api/owner", ownerRoutes);
 
 app.get("/", (req, res) => {
     res.json({
