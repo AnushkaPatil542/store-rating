@@ -1,3 +1,4 @@
+
 const express = require("express");
 
 const router = express.Router();
@@ -8,11 +9,15 @@ const authorize = require("../middleware/roleMiddleware");
 const {
     getStores,
     submitRating,
-    updateRating
+    updateRating,
+    changePassword
 } = require("../controllers/userController");
 
 
+// =====================================================
 // GET STORES
+// =====================================================
+
 router.get(
     "/stores",
     authenticate,
@@ -21,7 +26,10 @@ router.get(
 );
 
 
+// =====================================================
 // SUBMIT RATING
+// =====================================================
+
 router.post(
     "/stores/:storeId/rating",
     authenticate,
@@ -30,12 +38,28 @@ router.post(
 );
 
 
+// =====================================================
 // UPDATE RATING
+// =====================================================
+
 router.put(
     "/stores/:storeId/rating",
     authenticate,
     authorize("USER"),
     updateRating
+);
+
+
+// =====================================================
+// CHANGE PASSWORD
+// USER + STORE OWNER
+// =====================================================
+
+router.put(
+    "/user/password",
+    authenticate,
+    authorize("USER", "STORE_OWNER"),
+    changePassword
 );
 
 

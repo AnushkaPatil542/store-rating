@@ -9,11 +9,13 @@ const {
     getOwnerDashboard
 } = require("../controllers/ownerController");
 
+
 router.get(
     "/dashboard",
     authenticate,
     authorize("STORE_OWNER"),
     getOwnerDashboard
 );
+
 
 module.exports = router;

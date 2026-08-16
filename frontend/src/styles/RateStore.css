@@ -1,0 +1,123 @@
+.rating-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.rating-card {
+    width: 100%;
+    max-width: 520px;
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    background: none;
+    color: #6b7280;
+    cursor: pointer;
+    margin-bottom: 35px;
+}
+
+.rating-icon {
+    width: 70px;
+    height: 70px;
+    margin: auto;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #4f46e5;
+}
+
+.rating-card h1 {
+    margin-top: 25px;
+    margin-bottom: 8px;
+    font-size: 30px;
+}
+
+.rating-card p {
+    color: #6b7280;
+}
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 30px 0 15px;
+}
+
+.star-button {
+    border: none;
+    background: none;
+    color: #f59e0b;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+.star-button:hover {
+    transform: scale(1.15);
+}
+
+.rating-text {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.rating-error {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 11px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.rating-success {
+    background: #dcfce7;
+    color: #166534;
+    padding: 11px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+}
+
+.submit-rating-button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #4f46e5;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.submit-rating-button:hover {
+    background: #4338ca;
+}
+
+.submit-rating-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .rating-card {
+        padding: 25px;
+    }
+
+    .rating-stars {
+        gap: 2px;
+    }
+}

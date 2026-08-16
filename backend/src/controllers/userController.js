@@ -1,3 +1,5 @@
+
+const bcrypt = require("bcryptjs");
 const { Store, User, Rating } = require("../models");
 const { Op } = require("sequelize");
 
@@ -10,7 +12,6 @@ const getStores = async (req, res) => {
     try {
         const { search, sort } = req.query;
 
-        // Pagination
         const page = Math.max(
             parseInt(req.query.page) || 1,
             1
@@ -23,7 +24,7 @@ const getStores = async (req, res) => {
 
         const where = {};
 
-        // Search by name, address or email
+        // Search by store name or address
         if (search) {
             where[Op.or] = [
                 {
@@ -35,16 +36,10 @@ const getStores = async (req, res) => {
                     address: {
                         [Op.like]: `%${search}%`
                     }
-                },
-                {
-                    email: {
-                        [Op.like]: `%${search}%`
-                    }
                 }
             ];
         }
 
-        // Get stores
         const stores = await Store.findAll({
             where,
             include: [
@@ -57,12 +52,9 @@ const getStores = async (req, res) => {
             order: [["name", "ASC"]]
         });
 
-        // Prepare store data
-        const result = stores.map(store => {
-
+        const result = stores.map((store) => {
             const ratings = store.ratings || [];
 
-            // Calculate average rating
             const averageRating =
                 ratings.length > 0
                     ? ratings.reduce(
@@ -72,9 +64,8 @@ const getStores = async (req, res) => {
                     ) / ratings.length
                     : 0;
 
-            // Find current user's rating
             const myRating = ratings.find(
-                item =>
+                (item) =>
                     Number(item.user_id) ===
                     Number(req.user.id)
             );
@@ -95,10 +86,6 @@ const getStores = async (req, res) => {
             };
         });
 
-        // =================================================
-        // SORTING
-        // =================================================
-
         if (sort === "name") {
             result.sort((a, b) =>
                 a.name.localeCompare(b.name)
@@ -113,28 +100,21 @@ const getStores = async (req, res) => {
             );
         }
 
-        // =================================================
-        // PAGINATION
-        // =================================================
-
         const total = result.length;
 
-        const startIndex = (page - 1) * limit;
+        const startIndex =
+            (page - 1) * limit;
 
-        const paginatedStores = result.slice(
-            startIndex,
-            startIndex + limit
-        );
+        const paginatedStores =
+            result.slice(
+                startIndex,
+                startIndex + limit
+            );
 
-        const totalPages = Math.ceil(
-            total / limit
-        );
+        const totalPages =
+            Math.ceil(total / limit);
 
-        // =================================================
-        // RESPONSE
-        // =================================================
-
-        res.status(200).json({
+        return res.status(200).json({
             count: paginatedStores.length,
             total,
             page,
@@ -144,9 +124,12 @@ const getStores = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Get stores error:", error);
+        console.error(
+            "Get stores error:",
+            error
+        );
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -162,21 +145,21 @@ const submitRating = async (req, res) => {
         const { storeId } = req.params;
         const { rating } = req.body;
 
-        // Rating required
-        if (rating === undefined || rating === null) {
+        if (
+            rating === undefined ||
+            rating === null
+        ) {
             return res.status(400).json({
                 message: "Rating is required"
             });
         }
 
-        // Rating must be a number
         if (typeof rating !== "number") {
             return res.status(400).json({
                 message: "Rating must be a number"
             });
         }
 
-        // Rating must be integer between 1 and 5
         if (
             !Number.isInteger(rating) ||
             rating < 1 ||
@@ -188,8 +171,8 @@ const submitRating = async (req, res) => {
             });
         }
 
-        // Check store exists
-        const store = await Store.findByPk(storeId);
+        const store =
+            await Store.findByPk(storeId);
 
         if (!store) {
             return res.status(404).json({
@@ -197,13 +180,13 @@ const submitRating = async (req, res) => {
             });
         }
 
-        // Check whether user already rated
-        const existingRating = await Rating.findOne({
-            where: {
-                user_id: req.user.id,
-                store_id: storeId
-            }
-        });
+        const existingRating =
+            await Rating.findOne({
+                where: {
+                    user_id: req.user.id,
+                    store_id: storeId
+                }
+            });
 
         if (existingRating) {
             return res.status(409).json({
@@ -212,15 +195,16 @@ const submitRating = async (req, res) => {
             });
         }
 
-        // Create rating
-        const newRating = await Rating.create({
-            user_id: req.user.id,
-            store_id: storeId,
-            rating
-        });
+        const newRating =
+            await Rating.create({
+                user_id: req.user.id,
+                store_id: storeId,
+                rating
+            });
 
-        res.status(201).json({
-            message: "Rating submitted successfully",
+        return res.status(201).json({
+            message:
+                "Rating submitted successfully",
             rating: newRating
         });
 
@@ -230,7 +214,7 @@ const submitRating = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -246,21 +230,21 @@ const updateRating = async (req, res) => {
         const { storeId } = req.params;
         const { rating } = req.body;
 
-        // Rating required
-        if (rating === undefined || rating === null) {
+        if (
+            rating === undefined ||
+            rating === null
+        ) {
             return res.status(400).json({
                 message: "Rating is required"
             });
         }
 
-        // Rating must be a number
         if (typeof rating !== "number") {
             return res.status(400).json({
                 message: "Rating must be a number"
             });
         }
 
-        // Rating must be integer between 1 and 5
         if (
             !Number.isInteger(rating) ||
             rating < 1 ||
@@ -272,13 +256,13 @@ const updateRating = async (req, res) => {
             });
         }
 
-        // Find current user's rating
-        const existingRating = await Rating.findOne({
-            where: {
-                user_id: req.user.id,
-                store_id: storeId
-            }
-        });
+        const existingRating =
+            await Rating.findOne({
+                where: {
+                    user_id: req.user.id,
+                    store_id: storeId
+                }
+            });
 
         if (!existingRating) {
             return res.status(404).json({
@@ -287,13 +271,13 @@ const updateRating = async (req, res) => {
             });
         }
 
-        // Update rating
         existingRating.rating = rating;
 
         await existingRating.save();
 
-        res.status(200).json({
-            message: "Rating updated successfully",
+        return res.status(200).json({
+            message:
+                "Rating updated successfully",
             rating: existingRating
         });
 
@@ -303,7 +287,104 @@ const updateRating = async (req, res) => {
             error
         );
 
-        res.status(500).json({
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+};
+
+
+// =====================================================
+// CHANGE PASSWORD
+// =====================================================
+
+const changePassword = async (req, res) => {
+    try {
+        const {
+            currentPassword,
+            newPassword
+        } = req.body;
+
+        // Required fields
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({
+                message:
+                    "Current password and new password are required"
+            });
+        }
+
+        // Password validation
+        const passwordRegex =
+            /^(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,16}$/;
+
+        if (!passwordRegex.test(newPassword)) {
+            return res.status(400).json({
+                message:
+                    "Password must be 8-16 characters with at least one uppercase letter and one special character"
+            });
+        }
+
+        // Get logged-in user
+        const user =
+            await User.findByPk(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        // Verify current password
+        const passwordMatches =
+            await bcrypt.compare(
+                currentPassword,
+                user.password
+            );
+
+        if (!passwordMatches) {
+            return res.status(401).json({
+                message:
+                    "Current password is incorrect"
+            });
+        }
+
+        // Prevent same password
+        const samePassword =
+            await bcrypt.compare(
+                newPassword,
+                user.password
+            );
+
+        if (samePassword) {
+            return res.status(400).json({
+                message:
+                    "New password must be different from current password"
+            });
+        }
+
+        // Hash new password
+        const hashedPassword =
+            await bcrypt.hash(
+                newPassword,
+                10
+            );
+
+        user.password = hashedPassword;
+
+        await user.save();
+
+        return res.status(200).json({
+            message:
+                "Password updated successfully"
+        });
+
+    } catch (error) {
+        console.error(
+            "Change password error:",
+            error
+        );
+
+        return res.status(500).json({
             message: "Server error"
         });
     }
@@ -317,5 +398,7 @@ const updateRating = async (req, res) => {
 module.exports = {
     getStores,
     submitRating,
-    updateRating
+    updateRating,
+    changePassword
 };
+

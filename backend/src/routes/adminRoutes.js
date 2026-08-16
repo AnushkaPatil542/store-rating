@@ -1,3 +1,4 @@
+
 const express = require("express");
 
 const router = express.Router();
@@ -7,11 +8,17 @@ const authorize = require("../middleware/roleMiddleware");
 
 const {
     getDashboardStats,
-    getAllUsers,createUser
+    getAllUsers,
+    getUserDetails,
+    createUser,
+    getAllStores,
+    createStore
 } = require("../controllers/adminController");
 
 
-
+// =====================================================
+// DASHBOARD
+// =====================================================
 
 router.get(
     "/dashboard",
@@ -21,12 +28,26 @@ router.get(
 );
 
 
+// =====================================================
+// USERS
+// =====================================================
+
 router.get(
     "/users",
     authenticate,
     authorize("ADMIN"),
     getAllUsers
 );
+
+
+router.get(
+    "/users/:id",
+    authenticate,
+    authorize("ADMIN"),
+    getUserDetails
+);
+
+
 router.post(
     "/users",
     authenticate,
@@ -35,4 +56,25 @@ router.post(
 );
 
 
+// =====================================================
+// STORES
+// =====================================================
+
+router.get(
+    "/stores",
+    authenticate,
+    authorize("ADMIN"),
+    getAllStores
+);
+
+
+router.post(
+    "/stores",
+    authenticate,
+    authorize("ADMIN"),
+    createStore
+);
+
+
 module.exports = router;
+

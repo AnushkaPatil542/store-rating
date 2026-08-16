@@ -6,10 +6,30 @@ const authenticate = require("../middleware/authMiddleware");
 const authorize = require("../middleware/roleMiddleware");
 
 const {
+    getStores,
     createStore,
-    getAllStores
+    submitRating,
+    updateRating
 } = require("../controllers/storeController");
 
+
+// =====================================================
+// GET ALL STORES
+// USER + ADMIN
+// =====================================================
+
+router.get(
+    "/",
+    authenticate,
+    authorize("USER", "ADMIN"),
+    getStores
+);
+
+
+// =====================================================
+// CREATE STORE
+// ADMIN ONLY
+// =====================================================
 
 router.post(
     "/",
@@ -19,11 +39,29 @@ router.post(
 );
 
 
-router.get(
-    "/",
+// =====================================================
+// SUBMIT RATING
+// USER ONLY
+// =====================================================
+
+router.post(
+    "/:storeId/rating",
     authenticate,
-    authorize("ADMIN"),
-    getAllStores
+    authorize("USER"),
+    submitRating
+);
+
+
+// =====================================================
+// UPDATE RATING
+// USER ONLY
+// =====================================================
+
+router.put(
+    "/:storeId/rating",
+    authenticate,
+    authorize("USER"),
+    updateRating
 );
 
 
