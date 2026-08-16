@@ -1,0 +1,882 @@
+/* ================================
+   ADMIN USERS PAGE
+================================ */
+
+.admin-users-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+.admin-users-content {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+
+/* ================================
+   HEADER
+================================ */
+
+.admin-users-header {
+    margin-bottom: 28px;
+}
+
+.admin-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 14px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.admin-back-button:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #2563eb;
+}
+
+.admin-users-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.admin-users-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.admin-users-title h1 {
+    margin: 0 0 5px;
+
+    font-size: 32px;
+    color: #111827;
+
+    letter-spacing: -0.5px;
+}
+
+.admin-users-title p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* ================================
+   FILTER CARD
+================================ */
+
+.users-filter-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    padding: 22px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.filter-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    margin-bottom: 20px;
+
+    color: #2563eb;
+}
+
+.filter-heading h2 {
+    margin: 0 0 3px;
+
+    font-size: 18px;
+    color: #111827;
+}
+
+.filter-heading p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* ================================
+   FILTER GRID
+================================ */
+
+.users-filter-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.filter-field label {
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #374151;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    height: 43px;
+
+    box-sizing: border-box;
+
+    padding: 0 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.filter-field input::placeholder {
+    color: #9ca3af;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+
+/* ================================
+   CLEAR FILTER
+================================ */
+
+.clear-filter-button {
+    margin-top: 18px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 14px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #475569;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.clear-filter-button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #2563eb;
+}
+
+
+/* ================================
+   ERROR
+================================ */
+
+.admin-users-error {
+    padding: 13px 15px;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+
+    color: #b91c1c;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   USERS TABLE CARD
+================================ */
+
+.users-table-card {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.users-table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.users-table-header h2 {
+    margin: 0 0 5px;
+
+    font-size: 20px;
+    color: #111827;
+}
+
+.users-table-header p {
+    margin: 0;
+
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.users-count {
+    min-width: 30px;
+
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* ================================
+   TABLE
+================================ */
+
+.users-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    min-width: 850px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.users-table th {
+    padding: 13px 14px;
+
+    text-align: left;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.users-table th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.users-table th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.users-table td {
+    padding: 15px 14px;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.users-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.users-table tbody tr:hover {
+    background: #f8fafc;
+}
+
+.users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ================================
+   USER NAME
+================================ */
+
+.user-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.user-name-cell strong {
+    color: #111827;
+}
+
+
+/* ================================
+   ADDRESS
+================================ */
+
+.address-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #64748b;
+}
+
+
+/* ================================
+   ROLE BADGES
+================================ */
+
+.role-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 10px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.role-user {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.role-owner {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.role-admin {
+    background: #f3e8ff;
+    color: #7e22ce;
+}
+
+
+/* ================================
+   VIEW BUTTON
+================================ */
+
+.view-user-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.view-user-button:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+
+/* ================================
+   LOADING
+================================ */
+
+.users-loading {
+    padding: 55px 20px;
+
+    text-align: center;
+
+    color: #64748b;
+}
+
+.loading-spinner {
+    width: 30px;
+    height: 30px;
+
+    margin: 0 auto 12px;
+
+    border: 3px solid #e5e7eb;
+    border-top-color: #2563eb;
+
+    border-radius: 50%;
+
+    animation: spin 0.8s linear infinite;
+}
+
+.users-loading p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ================================
+   EMPTY STATE
+================================ */
+
+.users-empty {
+    padding: 60px 20px;
+
+    text-align: center;
+
+    color: #94a3b8;
+}
+
+.users-empty svg {
+    margin-bottom: 10px;
+}
+
+.users-empty h3 {
+    margin: 5px 0;
+
+    color: #374151;
+
+    font-size: 18px;
+}
+
+.users-empty p {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   MODAL OVERLAY
+================================ */
+
+.user-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.5);
+
+    backdrop-filter: blur(3px);
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+.user-modal {
+    width: 100%;
+    max-width: 500px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.2);
+
+    animation: modalAppear 0.2s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ================================
+   MODAL HEADER
+================================ */
+
+.user-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.user-modal-header h2 {
+    margin: 0 0 4px;
+
+    color: #111827;
+
+    font-size: 20px;
+}
+
+.user-modal-header p {
+    margin: 0;
+
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+.user-modal-header button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #f8fafc;
+    color: #64748b;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.user-modal-header button:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* ================================
+   MODAL LOADING
+================================ */
+
+.modal-loading {
+    padding: 50px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   USER DETAILS
+================================ */
+
+.user-details {
+    padding: 28px;
+}
+
+.detail-avatar {
+    width: 70px;
+    height: 70px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.user-details > h3 {
+    margin: 0 0 25px;
+
+    text-align: center;
+
+    color: #111827;
+
+    font-size: 21px;
+}
+
+
+/* ================================
+   DETAIL LIST
+================================ */
+
+.detail-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    padding: 14px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 11px;
+
+    background: #f8fafc;
+
+    color: #2563eb;
+}
+
+.detail-item > div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.detail-item span {
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.detail-item strong {
+    color: #111827;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+
+/* ================================
+   OWNER RATING
+================================ */
+
+.owner-rating-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 18px;
+
+    padding: 15px 16px;
+
+    border-radius: 11px;
+
+    background: #fff7ed;
+
+    border: 1px solid #fed7aa;
+}
+
+.owner-rating-box span {
+    color: #9a3412;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.owner-rating-box strong {
+    color: #c2410c;
+
+    font-size: 16px;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 950px) {
+
+    .users-filter-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-users-content {
+        padding: 18px;
+    }
+
+    .admin-users-title {
+        align-items: flex-start;
+    }
+
+    .admin-users-title h1 {
+        font-size: 27px;
+    }
+
+    .users-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .users-filter-card {
+        padding: 18px;
+    }
+
+    .users-table-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .user-modal-overlay {
+        padding: 12px;
+    }
+
+    .user-details {
+        padding: 22px;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .admin-users-title {
+        gap: 10px;
+    }
+
+    .admin-users-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .admin-users-title h1 {
+        font-size: 23px;
+    }
+
+    .admin-users-title p {
+        font-size: 13px;
+    }
+
+    .users-table-header {
+        align-items: flex-start;
+    }
+
+    .user-modal {
+        border-radius: 14px;
+    }
+}

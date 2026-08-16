@@ -145,14 +145,6 @@ function OwnerDashboard() {
                     </div>
 
 
-                    <button
-                        type="button"
-                        onClick={() =>
-                            navigate("/change-password")
-                        }
-                    >
-                        Change Password
-                    </button>
 
                 </div>
 

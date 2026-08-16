@@ -1,6 +1,7 @@
 
 import { LogOut, Star, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Navbar.css";
 
 function Navbar({ title = "StoreRate" }) {
     const navigate = useNavigate();
@@ -14,56 +15,59 @@ function Navbar({ title = "StoreRate" }) {
         localStorage.getItem("user") || "null"
     );
 
+    const canChangePassword =
+        user?.role === "USER" ||
+        user?.role === "STORE_OWNER";
+
     return (
-        <nav
-            style={{
-                background: "white",
-                padding: "18px 30px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.05)"
-            }}
-        >
+        <nav className="navbar">
 
-            <h2
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px"
-                }}
-            >
-                <Star size={22} />
-                {title}
-            </h2>
+            {/* ================= BRAND ================= */}
 
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px"
-                }}
-            >
+            <div className="navbar-brand">
 
-                {user?.role === "USER" && (
+                <div className="navbar-logo">
+                    <Star
+                        size={21}
+                        fill="currentColor"
+                    />
+                </div>
+
+                <div className="navbar-title">
+                    {title}
+                </div>
+
+            </div>
+
+
+            {/* ================= ACTIONS ================= */}
+
+            <div className="navbar-actions">
+
+                {canChangePassword && (
                     <button
                         type="button"
+                        className="navbar-button password-button"
                         onClick={() =>
                             navigate("/change-password")
                         }
                     >
-                        <Lock size={16} />
-                        {" "}Change Password
+                        <Lock size={17} />
+                        <span>
+                            Change Password
+                        </span>
                     </button>
                 )}
 
                 <button
                     type="button"
-                    className="danger-btn"
+                    className="navbar-button logout-button"
                     onClick={logout}
                 >
-                    <LogOut size={16} />
-                    {" "}Logout
+                    <LogOut size={17} />
+                    <span>
+                        Logout
+                    </span>
                 </button>
 
             </div>

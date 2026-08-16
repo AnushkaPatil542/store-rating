@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import "../styles/AdminStores.css";
 
 function AdminStores() {
     const navigate = useNavigate();

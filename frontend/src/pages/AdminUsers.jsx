@@ -1,8 +1,24 @@
+
 import { useEffect, useState } from "react";
+import {
+    ArrowLeft,
+    Search,
+    Users,
+    Eye,
+    X,
+    MapPin,
+    Mail,
+    Shield
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
+import Navbar from "../components/Navbar";
+
+import "../styles/AdminUsers.css";
 
 function AdminUsers() {
+
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
@@ -20,37 +36,43 @@ function AdminUsers() {
     const [detailsLoading, setDetailsLoading] = useState(false);
     const [error, setError] = useState("");
 
-    // =====================================================
-    // LOAD USERS
-    // =====================================================
-
     useEffect(() => {
+
         let cancelled = false;
 
         const fetchUsers = async () => {
+
             try {
+
                 setLoading(true);
                 setError("");
 
-                const response = await api.get("/admin/users", {
-                    params: {
-                        name: filters.name,
-                        email: filters.email,
-                        address: filters.address,
-                        role: filters.role
+                const response = await api.get(
+                    "/admin/users",
+                    {
+                        params: {
+                            name: filters.name,
+                            email: filters.email,
+                            address: filters.address,
+                            role: filters.role
+                        }
                     }
-                });
+                );
 
                 if (!cancelled) {
-                    setUsers(response.data.users || []);
+                    setUsers(
+                        response.data.users || []
+                    );
                 }
 
             } catch (error) {
-                console.error("Failed to load users:", error);
 
-                if (cancelled) {
-                    return;
-                }
+                console.error(
+                    "Failed to load users:",
+                    error
+                );
+
+                if (cancelled) return;
 
                 if (
                     error.response?.status === 401 ||
@@ -67,15 +89,18 @@ function AdminUsers() {
                 );
 
             } finally {
+
                 if (!cancelled) {
                     setLoading(false);
                 }
+
             }
         };
 
-        const timer = setTimeout(() => {
-            fetchUsers();
-        }, 300);
+        const timer = setTimeout(
+            fetchUsers,
+            300
+        );
 
         return () => {
             cancelled = true;
@@ -90,11 +115,9 @@ function AdminUsers() {
         navigate
     ]);
 
-    // =====================================================
-    // FILTER CHANGE
-    // =====================================================
 
     const handleFilterChange = (e) => {
+
         const { name, value } = e.target;
 
         setFilters((previous) => ({
@@ -103,11 +126,9 @@ function AdminUsers() {
         }));
     };
 
-    // =====================================================
-    // CLEAR FILTERS
-    // =====================================================
 
     const clearFilters = () => {
+
         setFilters({
             name: "",
             email: "",
@@ -116,12 +137,11 @@ function AdminUsers() {
         });
     };
 
-    // =====================================================
-    // VIEW USER DETAILS
-    // =====================================================
 
     const handleViewDetails = async (userId) => {
+
         try {
+
             setDetailsLoading(true);
             setError("");
 
@@ -132,6 +152,7 @@ function AdminUsers() {
             setSelectedUser(response.data);
 
         } catch (error) {
+
             console.error(
                 "Failed to load user details:",
                 error
@@ -152,213 +173,352 @@ function AdminUsers() {
             );
 
         } finally {
+
             setDetailsLoading(false);
+
         }
     };
 
-    return (
-        <div className="admin-page">
 
-            <main className="admin-content">
+    const getRoleClass = (role) => {
+
+        if (role === "ADMIN")
+            return "role-admin";
+
+        if (role === "STORE_OWNER")
+            return "role-owner";
+
+        return "role-user";
+    };
+
+
+    return (
+
+        <div className="admin-users-page">
+
+            <Navbar title="StoreRate Admin" />
+
+            <main className="admin-users-content">
 
                 {/* HEADER */}
 
-                <div className="admin-header">
+                <div className="admin-users-header">
 
                     <div>
-                        <h1>Manage Users</h1>
 
-                        <p>
-                            View and filter all users
-                        </p>
+                        <button
+                            className="admin-back-button"
+                            onClick={() =>
+                                navigate("/admin")
+                            }
+                        >
+                            <ArrowLeft size={17} />
+                            Dashboard
+                        </button>
+
+                        <div className="admin-users-title">
+
+                            <div className="admin-users-icon">
+                                <Users size={25} />
+                            </div>
+
+                            <div>
+
+                                <h1>
+                                    Manage Users
+                                </h1>
+
+                                <p>
+                                    View, search and manage
+                                    registered users
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={() =>
-                            navigate("/admin")
-                        }
-                    >
-                        ← Dashboard
-                    </button>
 
                 </div>
 
+
                 {/* FILTERS */}
 
-                <section className="admin-section">
+                <section className="users-filter-card">
 
-                    <h2>Filters</h2>
+                    <div className="filter-heading">
 
-                    <div className="admin-toolbar">
+                        <Search size={19} />
 
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Filter by name"
-                            value={filters.name}
-                            onChange={handleFilterChange}
-                        />
-
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="Filter by email"
-                            value={filters.email}
-                            onChange={handleFilterChange}
-                        />
-
-                        <input
-                            type="text"
-                            name="address"
-                            placeholder="Filter by address"
-                            value={filters.address}
-                            onChange={handleFilterChange}
-                        />
-
-                        <select
-                            name="role"
-                            value={filters.role}
-                            onChange={handleFilterChange}
-                        >
-                            <option value="">
-                                All Roles
-                            </option>
-
-                            <option value="USER">
-                                USER
-                            </option>
-
-                            <option value="STORE_OWNER">
-                                STORE OWNER
-                            </option>
-
-                            <option value="ADMIN">
-                                ADMIN
-                            </option>
-                        </select>
-
-                        <button
-                            type="button"
-                            onClick={clearFilters}
-                        >
-                            Clear Filters
-                        </button>
+                        <div>
+                            <h2>Search & Filter</h2>
+                            <p>
+                                Find users using the
+                                available filters
+                            </p>
+                        </div>
 
                     </div>
 
+
+                    <div className="users-filter-grid">
+
+                        <div className="filter-field">
+
+                            <label>Name</label>
+
+                            <input
+                                name="name"
+                                placeholder="Search by name"
+                                value={filters.name}
+                                onChange={
+                                    handleFilterChange
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="filter-field">
+
+                            <label>Email</label>
+
+                            <input
+                                name="email"
+                                placeholder="Search by email"
+                                value={filters.email}
+                                onChange={
+                                    handleFilterChange
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="filter-field">
+
+                            <label>Address</label>
+
+                            <input
+                                name="address"
+                                placeholder="Search by address"
+                                value={filters.address}
+                                onChange={
+                                    handleFilterChange
+                                }
+                            />
+
+                        </div>
+
+
+                        <div className="filter-field">
+
+                            <label>Role</label>
+
+                            <select
+                                name="role"
+                                value={filters.role}
+                                onChange={
+                                    handleFilterChange
+                                }
+                            >
+
+                                <option value="">
+                                    All Roles
+                                </option>
+
+                                <option value="USER">
+                                    User
+                                </option>
+
+                                <option value="STORE_OWNER">
+                                    Store Owner
+                                </option>
+
+                                <option value="ADMIN">
+                                    Admin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        className="clear-filter-button"
+                        onClick={clearFilters}
+                    >
+                        <X size={16} />
+                        Clear Filters
+                    </button>
+
                 </section>
+
 
                 {/* ERROR */}
 
                 {error && (
-                    <div className="admin-error">
+                    <div className="admin-users-error">
                         {error}
                     </div>
                 )}
 
-                {/* LOADING */}
 
-                {loading && (
-                    <div className="admin-empty">
-                        Loading users...
-                    </div>
-                )}
+                {/* USERS */}
 
-                {/* USERS TABLE */}
+                <section className="users-table-card">
 
-                {!loading && !error && (
-                    <section className="admin-section">
+                    <div className="users-table-header">
 
-                        <div className="section-title">
+                        <div>
 
                             <h2>
-                                Users
+                                All Users
                             </h2>
 
-                            <span>
-                                {users.length}
-                            </span>
+                            <p>
+                                {users.length} users found
+                            </p>
 
                         </div>
 
-                        <div className="table-container">
+                        <span className="users-count">
+                            {users.length}
+                        </span>
 
-                            <table>
+                    </div>
+
+
+                    {loading ? (
+
+                        <div className="users-loading">
+                            <div className="loading-spinner"></div>
+                            <p>Loading users...</p>
+                        </div>
+
+                    ) : users.length === 0 ? (
+
+                        <div className="users-empty">
+
+                            <Users size={42} />
+
+                            <h3>
+                                No users found
+                            </h3>
+
+                            <p>
+                                Try changing your
+                                search filters.
+                            </p>
+
+                        </div>
+
+                    ) : (
+
+                        <div className="users-table-wrapper">
+
+                            <table className="users-table">
 
                                 <thead>
 
                                     <tr>
+
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>User</th>
                                         <th>Email</th>
                                         <th>Address</th>
                                         <th>Role</th>
-                                        <th>Details</th>
+                                        <th>Action</th>
+
                                     </tr>
 
                                 </thead>
 
+
                                 <tbody>
 
-                                    {users.length > 0 ? (
+                                    {users.map((user) => (
 
-                                        users.map((user) => (
+                                        <tr key={user.id}>
 
-                                            <tr key={user.id}>
+                                            <td>
+                                                #{user.id}
+                                            </td>
 
-                                                <td>
-                                                    {user.id}
-                                                </td>
+                                            <td>
 
-                                                <td>
-                                                    {user.name}
-                                                </td>
+                                                <div className="user-name-cell">
 
-                                                <td>
-                                                    {user.email}
-                                                </td>
+                                                    <div className="user-avatar">
+                                                        {user.name
+                                                            ?.charAt(0)
+                                                            ?.toUpperCase()}
+                                                    </div>
 
-                                                <td>
-                                                    {user.address}
-                                                </td>
+                                                    <strong>
+                                                        {user.name}
+                                                    </strong>
 
-                                                <td>
-                                                    <span className="role-badge">
-                                                        {user.role}
-                                                    </span>
-                                                </td>
+                                                </div>
 
-                                                <td>
+                                            </td>
 
-                                                    <button
-                                                        type="button"
-                                                        onClick={() =>
-                                                            handleViewDetails(
-                                                                user.id
-                                                            )
-                                                        }
-                                                    >
-                                                        View Details
-                                                    </button>
+                                            <td>
+                                                {user.email}
+                                            </td>
 
-                                                </td>
+                                            <td>
 
-                                            </tr>
+                                                <span className="address-cell">
 
-                                        ))
+                                                    <MapPin size={14} />
 
-                                    ) : (
+                                                    {user.address ||
+                                                        "Not provided"}
 
-                                        <tr>
+                                                </span>
 
-                                            <td colSpan="6">
-                                                No users found
+                                            </td>
+
+                                            <td>
+
+                                                <span
+                                                    className={`role-badge ${getRoleClass(
+                                                        user.role
+                                                    )}`}
+                                                >
+                                                    {user.role ===
+                                                    "STORE_OWNER"
+                                                        ? "Store Owner"
+                                                        : user.role}
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+
+                                                <button
+                                                    className="view-user-button"
+                                                    onClick={() =>
+                                                        handleViewDetails(
+                                                            user.id
+                                                        )
+                                                    }
+                                                >
+
+                                                    <Eye size={16} />
+
+                                                    View
+
+                                                </button>
+
                                             </td>
 
                                         </tr>
 
-                                    )}
+                                    ))}
 
                                 </tbody>
 
@@ -366,78 +526,152 @@ function AdminUsers() {
 
                         </div>
 
-                    </section>
-                )}
+                    )}
 
-                {/* DETAILS LOADING */}
+                </section>
 
-                {detailsLoading && (
-                    <div className="admin-empty">
-                        Loading user details...
-                    </div>
-                )}
 
-                {/* USER DETAILS */}
+                {/* USER DETAILS MODAL */}
 
-                {selectedUser && !detailsLoading && (
+                {selectedUser && (
 
-                    <section className="admin-section">
+                    <div
+                        className="user-modal-overlay"
+                        onClick={() =>
+                            setSelectedUser(null)
+                        }
+                    >
 
-                        <div className="section-title">
+                        <div
+                            className="user-modal"
+                            onClick={(e) =>
+                                e.stopPropagation()
+                            }
+                        >
 
-                            <h2>
-                                User Details
-                            </h2>
+                            <div className="user-modal-header">
 
-                        </div>
+                                <div>
 
-                        <div>
+                                    <h2>
+                                        User Details
+                                    </h2>
 
-                            <p>
-                                <strong>Name:</strong>{" "}
-                                {selectedUser.user.name}
-                            </p>
+                                    <p>
+                                        Account information
+                                    </p>
 
-                            <p>
-                                <strong>Email:</strong>{" "}
-                                {selectedUser.user.email}
-                            </p>
+                                </div>
 
-                            <p>
-                                <strong>Address:</strong>{" "}
-                                {selectedUser.user.address}
-                            </p>
+                                <button
+                                    onClick={() =>
+                                        setSelectedUser(null)
+                                    }
+                                >
+                                    <X size={20} />
+                                </button>
 
-                            <p>
-                                <strong>Role:</strong>{" "}
-                                {selectedUser.user.role}
-                            </p>
+                            </div>
 
-                            {selectedUser.user.role ===
-                                "STORE_OWNER" && (
 
-                                <p>
-                                    <strong>
-                                        Rating:
-                                    </strong>{" "}
-                                    ⭐{" "}
-                                    {selectedUser.user.rating ?? 0}
-                                </p>
+                            {detailsLoading ? (
+
+                                <div className="modal-loading">
+                                    Loading details...
+                                </div>
+
+                            ) : (
+
+                                <div className="user-details">
+
+                                    <div className="detail-avatar">
+
+                                        {selectedUser.user.name
+                                            ?.charAt(0)
+                                            ?.toUpperCase()}
+
+                                    </div>
+
+
+                                    <h3>
+                                        {selectedUser.user.name}
+                                    </h3>
+
+
+                                    <div className="detail-list">
+
+                                        <div className="detail-item">
+
+                                            <Mail size={18} />
+
+                                            <div>
+                                                <span>Email</span>
+                                                <strong>
+                                                    {selectedUser.user.email}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="detail-item">
+
+                                            <MapPin size={18} />
+
+                                            <div>
+                                                <span>Address</span>
+                                                <strong>
+                                                    {selectedUser.user.address ||
+                                                        "Not provided"}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="detail-item">
+
+                                            <Shield size={18} />
+
+                                            <div>
+                                                <span>Role</span>
+                                                <strong>
+                                                    {selectedUser.user.role}
+                                                </strong>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {selectedUser.user.role ===
+                                        "STORE_OWNER" && (
+
+                                        <div className="owner-rating-box">
+
+                                            <span>
+                                                Store Rating
+                                            </span>
+
+                                            <strong>
+                                                ⭐{" "}
+                                                {selectedUser.user.rating ??
+                                                    0}
+                                            </strong>
+
+                                        </div>
+
+                                    )}
+
+
+                                </div>
 
                             )}
 
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setSelectedUser(null)
-                                }
-                            >
-                                Close
-                            </button>
-
                         </div>
 
-                    </section>
+                    </div>
 
                 )}
 

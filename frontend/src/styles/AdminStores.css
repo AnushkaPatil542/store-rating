@@ -1,0 +1,538 @@
+
+/* =====================================================
+   ADMIN STORES PAGE
+===================================================== */
+
+.admin-page {
+    min-height: 100vh;
+    background: #f5f7fb;
+}
+
+.admin-content {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.admin-header h1 {
+    margin: 0 0 6px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.5px;
+}
+
+.admin-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+
+/* Dashboard Button */
+
+.admin-header button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 10px 16px;
+
+    border: 1px solid #dbe3ef;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.admin-header button:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #2563eb;
+}
+
+
+/* =====================================================
+   TOOLBAR / FILTERS
+===================================================== */
+
+.admin-toolbar {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    padding: 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr)
+        auto
+        auto;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+
+/* Filter Inputs */
+
+.admin-toolbar input {
+    width: 100%;
+    height: 44px;
+
+    box-sizing: border-box;
+
+    padding: 0 13px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+
+    outline: none;
+
+    font-size: 14px;
+    color: #111827;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-toolbar input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.admin-toolbar input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* Toolbar Buttons */
+
+.admin-toolbar button {
+    height: 44px;
+
+    padding: 0 16px;
+
+    border-radius: 9px;
+
+    border: 1px solid #dbe3ef;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: all 0.2s ease;
+}
+
+.admin-toolbar button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+
+/* Add Store Button */
+
+.admin-toolbar button:last-child {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+.admin-toolbar button:last-child:hover {
+    background: #1d4ed8;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.admin-section {
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+
+/* Section Title */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 22px;
+}
+
+.section-title h2 {
+    margin: 0;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #111827;
+}
+
+.section-title span {
+    min-width: 28px;
+
+    padding: 4px 9px;
+
+    border-radius: 20px;
+
+    background: #eff6ff;
+    color: #2563eb;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* =====================================================
+   CREATE STORE FORM
+===================================================== */
+
+.admin-form {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+}
+
+
+/* Inputs + Select */
+
+.admin-form input,
+.admin-form select {
+    width: 100%;
+    height: 46px;
+
+    box-sizing: border-box;
+
+    padding: 0 13px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.admin-form input::placeholder {
+    color: #9ca3af;
+}
+
+
+/* Create Store Button */
+
+.admin-form button {
+    grid-column: 1 / -1;
+
+    height: 46px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.admin-form button:hover:not(:disabled) {
+    background: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.admin-form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* =====================================================
+   SUCCESS / ERROR
+===================================================== */
+
+.admin-success {
+    padding: 12px 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    background: #ecfdf5;
+
+    border: 1px solid #bbf7d0;
+
+    color: #166534;
+
+    font-size: 14px;
+}
+
+.admin-error {
+    padding: 12px 14px;
+
+    margin-bottom: 18px;
+
+    border-radius: 10px;
+
+    background: #fef2f2;
+
+    border: 1px solid #fecaca;
+
+    color: #b91c1c;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-container table {
+    width: 100%;
+
+    min-width: 850px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+
+/* Table Header */
+
+.table-container th {
+    padding: 13px 14px;
+
+    text-align: left;
+
+    background: #f8fafc;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table-container th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table-container th:last-child {
+    border-top-right-radius: 10px;
+}
+
+
+/* Table Data */
+
+.table-container td {
+    padding: 15px 14px;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+/* Row Hover */
+
+.table-container tbody tr {
+    transition: background 0.15s ease;
+}
+
+.table-container tbody tr:hover {
+    background: #f8fafc;
+}
+
+.table-container tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =====================================================
+   STORE INFORMATION
+===================================================== */
+
+.table-container td:nth-child(2) {
+    font-weight: 650;
+    color: #111827;
+}
+
+.table-container td:nth-child(3),
+.table-container td:nth-child(4) {
+    color: #64748b;
+}
+
+
+/* =====================================================
+   OWNER ID
+===================================================== */
+
+.table-container td:nth-child(5) {
+    font-weight: 600;
+    color: #475569;
+}
+
+
+/* =====================================================
+   RATING
+===================================================== */
+
+.table-container td:nth-child(6) {
+    font-weight: 700;
+    color: #c2410c;
+}
+
+
+/* =====================================================
+   EMPTY / LOADING
+===================================================== */
+
+.admin-empty {
+    padding: 55px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    text-align: center;
+
+    color: #64748b;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 950px) {
+
+    .admin-toolbar {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .admin-form {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-content {
+        padding: 18px;
+    }
+
+    .admin-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .admin-header h1 {
+        font-size: 27px;
+    }
+
+    .admin-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-section {
+        padding: 18px;
+
+        border-radius: 14px;
+    }
+
+}
+

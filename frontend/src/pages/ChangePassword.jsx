@@ -1,33 +1,103 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    Lock,
+    ArrowLeft,
+    ShieldCheck,
+    Eye,
+    EyeOff
+} from "lucide-react";
+
 import api from "../services/api";
+import "../styles/ChangePassword.css";
 
 function ChangePassword() {
+
     const navigate = useNavigate();
 
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
+    const user = JSON.parse(
+        localStorage.getItem("user") || "null"
+    );
 
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [currentPassword, setCurrentPassword] =
+        useState("");
+
+    const [newPassword, setNewPassword] =
+        useState("");
+
+    const [showCurrent, setShowCurrent] =
+        useState(false);
+
+    const [showNew, setShowNew] =
+        useState(false);
+
+    const [message, setMessage] =
+        useState("");
+
+    const [error, setError] =
+        useState("");
+
+    const [loading, setLoading] =
+        useState(false);
+
+
+    const getDashboardPath = () => {
+
+        if (user?.role === "STORE_OWNER") {
+            return "/owner";
+        }
+
+        if (user?.role === "ADMIN") {
+            return "/admin";
+        }
+
+        return "/user";
+    };
+
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         setMessage("");
         setError("");
 
+
         if (!currentPassword || !newPassword) {
+
             setError(
-                "Current password and new password are required"
+                "Please enter both passwords."
             );
+
             return;
         }
 
+
+        if (newPassword.length < 6) {
+
+            setError(
+                "New password must be at least 6 characters."
+            );
+
+            return;
+        }
+
+
+        if (currentPassword === newPassword) {
+
+            setError(
+                "New password must be different from your current password."
+            );
+
+            return;
+        }
+
+
         try {
+
             setLoading(true);
+
 
             const response = await api.put(
                 "/user/password",
@@ -37,76 +107,147 @@ function ChangePassword() {
                 }
             );
 
+
             setMessage(
                 response.data.message ||
-                "Password updated successfully"
+                "Password updated successfully!"
             );
+
 
             setCurrentPassword("");
             setNewPassword("");
 
+
         } catch (error) {
+
             console.error(
                 "Change password error:",
                 error
             );
 
+
+            /*
+             * Do NOT automatically redirect on 403 here.
+             * 403 usually means the backend role authorization
+             * does not allow the current user.
+             */
+
             if (
-                error.response?.status === 401 ||
-                error.response?.status === 403
+                error.response?.status === 401
             ) {
+
                 localStorage.clear();
+
                 navigate("/login");
+
                 return;
             }
 
+
             setError(
                 error.response?.data?.message ||
-                "Failed to update password"
+                "Unable to update password."
             );
 
         } finally {
+
             setLoading(false);
+
         }
     };
 
+
     return (
-        <div className="auth-page">
 
-            <div className="auth-container">
+        <div className="change-password-page">
 
-                <div className="auth-form-section">
+            <div className="change-password-card">
 
-                    <h2>Change Password</h2>
 
-                    <p className="auth-subtitle">
-                        Update your account password
+                <button
+                    className="change-back-button"
+                    type="button"
+                    onClick={() =>
+                        navigate(
+                            getDashboardPath()
+                        )
+                    }
+                >
+
+                    <ArrowLeft size={18} />
+
+                    Back to Dashboard
+
+                </button>
+
+
+                <div className="change-password-icon">
+
+                    <Lock size={30} />
+
+                </div>
+
+
+                <div className="change-password-heading">
+
+                    <h1>
+                        Change Password
+                    </h1>
+
+                    <p>
+                        Keep your StoreRate account secure
+                        with a strong password.
                     </p>
 
-                    {message && (
-                        <div className="auth-success">
+                </div>
+
+
+                {message && (
+
+                    <div className="password-success">
+
+                        <ShieldCheck size={19} />
+
+                        <span>
                             {message}
-                        </div>
-                    )}
+                        </span>
 
-                    {error && (
-                        <div className="auth-error">
-                            {error}
-                        </div>
-                    )}
+                    </div>
 
-                    <form
-                        className="auth-form"
-                        onSubmit={handleSubmit}
-                    >
+                )}
 
-                        <div>
-                            <label>
-                                Current Password
-                            </label>
+
+                {error && (
+
+                    <div className="password-error">
+
+                        {error}
+
+                    </div>
+
+                )}
+
+
+                <form
+                    className="change-password-form"
+                    onSubmit={handleSubmit}
+                >
+
+
+                    <div className="password-field">
+
+                        <label>
+                            Current Password
+                        </label>
+
+                        <div className="password-input-wrapper">
 
                             <input
-                                type="password"
+                                type={
+                                    showCurrent
+                                        ? "text"
+                                        : "password"
+                                }
                                 placeholder="Enter current password"
                                 value={currentPassword}
                                 onChange={(e) =>
@@ -115,15 +256,43 @@ function ChangePassword() {
                                     )
                                 }
                             />
+
+                            <button
+                                type="button"
+                                className="password-eye"
+                                onClick={() =>
+                                    setShowCurrent(
+                                        !showCurrent
+                                    )
+                                }
+                            >
+
+                                {showCurrent
+                                    ? <EyeOff size={18} />
+                                    : <Eye size={18} />
+                                }
+
+                            </button>
+
                         </div>
 
-                        <div>
-                            <label>
-                                New Password
-                            </label>
+                    </div>
+
+
+                    <div className="password-field">
+
+                        <label>
+                            New Password
+                        </label>
+
+                        <div className="password-input-wrapper">
 
                             <input
-                                type="password"
+                                type={
+                                    showNew
+                                        ? "text"
+                                        : "password"
+                                }
                                 placeholder="Enter new password"
                                 value={newPassword}
                                 onChange={(e) =>
@@ -132,30 +301,61 @@ function ChangePassword() {
                                     )
                                 }
                             />
+
+                            <button
+                                type="button"
+                                className="password-eye"
+                                onClick={() =>
+                                    setShowNew(
+                                        !showNew
+                                    )
+                                }
+                            >
+
+                                {showNew
+                                    ? <EyeOff size={18} />
+                                    : <Eye size={18} />
+                                }
+
+                            </button>
+
                         </div>
 
-                        <button
-                            className="auth-button"
-                            type="submit"
-                            disabled={loading}
-                        >
-                            {loading
-                                ? "Updating..."
-                                : "Update Password"}
-                        </button>
+                        <span className="password-hint">
+                            Use at least 6 characters.
+                        </span>
 
-                    </form>
+                    </div>
+
 
                     <button
-                        type="button"
-                        onClick={() =>
-                            navigate("/user")
-                        }
+                        className="update-password-button"
+                        type="submit"
+                        disabled={loading}
                     >
-                        ← Back to Dashboard
+
+                        <Lock size={18} />
+
+                        {loading
+                            ? "Updating..."
+                            : "Update Password"}
+
                     </button>
 
+                </form>
+
+
+                <div className="password-security-note">
+
+                    <ShieldCheck size={18} />
+
+                    <span>
+                        Your password is securely
+                        encrypted and protected.
+                    </span>
+
                 </div>
+
 
             </div>
 
